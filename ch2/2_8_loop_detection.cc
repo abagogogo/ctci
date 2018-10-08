@@ -47,7 +47,7 @@ struct node *find_loop_begin(struct node *head) {
     while (slow && fast && fast->next) {
         slow = slow->next;
         fast = fast->next->next;
-        if (slow == fast) {
+        if (slow && slow == fast) {
             has_loop = true;
             break;
         }
