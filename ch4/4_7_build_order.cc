@@ -2,6 +2,12 @@
 
 using namespace std;
 
+enum SEARCH_STATE {
+    BLANK,
+    VISITING,
+    COMPLETED,
+};
+
 class Project {
 protected:
     vector<Project*> neighbors;
@@ -10,9 +16,13 @@ protected:
     int depend;
 
 public:
+    SEARCH_STATE state;
+
+public:
     Project(const string &_name) {
         depend = 0;
         name = _name;
+        state = BLANK;
     }
 
     void add_neighbor(Project *node) {
@@ -74,6 +84,7 @@ public:
     }
 };
 
+#if 1 // Topological sort
 void add_non_depend(vector<Project *> &order, vector<Project *> &projects) {
     for (auto p : projects) {
         if (p->get_depend() == 0) {
@@ -82,12 +93,13 @@ void add_non_depend(vector<Project *> &order, vector<Project *> &projects) {
     }
 }
 
-void order_projects(vector<Project *> &order, vector<Project *> &projects) {
+bool order_projects(vector<Project *> &order, vector<Project *> &projects) {
     int to_process = 0;
 
     add_non_depend(order, projects);
     while (to_process < order.size()) {
         Project *curr = order[to_process];
+        if (!curr) return false;
 
         vector<Project *> neighbors = curr->get_neighbors();
         for (auto next : neighbors) {
@@ -96,7 +108,33 @@ void order_projects(vector<Project *> &order, vector<Project *> &projects) {
         add_non_depend(order, neighbors);
         ++to_process;
     }
+    return true;
 }
+#else // DFS
+bool do_dfs(vector<Project *> &order, Project *proj) {
+    if (proj->state == VISITING) return false; // cycle exists.
+    if (proj->state == COMPLETED) return true;
+
+    proj->state = VISITING;
+    auto lists = proj->get_neighbors();
+    for (auto next : lists) {
+        if (!do_dfs(order, next)) return false;
+    }
+    proj->state = COMPLETED;
+    order.push_back(proj);
+    return true;
+}
+
+bool order_projects(vector<Project *> &order, vector<Project *> &projects) {
+    for (auto proj : projects) {
+        if (!do_dfs(order, proj)) {
+            return false; // cycle exists, so, the build order isn't complete.
+        }
+    }
+    std::reverse(order.begin(), order.end());
+    return true;
+}
+#endif
 
 void find_build_order(vector<Project *> &order, vector<string> projects, vector<pair<string, string>> dependencies) {
     Graph *g = new Graph();
@@ -110,7 +148,7 @@ void find_build_order(vector<Project *> &order, vector<string> projects, vector<
         g->add_edge(dep.first, dep.second);
     }
 
-    return order_projects(order, g->get_nodes());
+    order_projects(order, g->get_nodes());
 }
 
 int main(void) {
