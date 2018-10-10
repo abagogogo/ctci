@@ -94,7 +94,7 @@ struct Coordinate {
 
         // Split the grid into quadrants.
         // Search bottome left and top right.
-        //printf("RJ_DBG: finding %d -> pivot = (%d, %d)\n", elem, start.row, start.col);
+        //printf("DBG: finding %d -> pivot = (%d, %d)\n", elem, start.row, start.col);
         return partition_and_search(matrix, orig, dest, start, elem);
     }
 
@@ -105,10 +105,10 @@ struct Coordinate {
         Coordinate ur_orig(orig.row, pivot.col);
         Coordinate ur_dest(pivot.row - 1, dest.col);
 
-        //printf("RJ_DBG: searching lower left (%d, %d) ~ (%d, %d)\n", ll_orig.row, ll_orig.col, ll_dest.row, ll_dest.col);
+        //printf("DBG: searching lower left (%d, %d) ~ (%d, %d)\n", ll_orig.row, ll_orig.col, ll_dest.row, ll_dest.col);
         Coordinate lower_left = find_element(matrix, ll_orig, ll_dest, elem);
         if (!lower_left.is_valid()) {
-            //printf("RJ_DBG: searching upper right (%d, %d) ~ (%d, %d)\n", ur_orig.row, ur_orig.col, ur_dest.row, ur_dest.col);
+            //printf("DBG: searching upper right (%d, %d) ~ (%d, %d)\n", ur_orig.row, ur_orig.col, ur_dest.row, ur_dest.col);
             return find_element(matrix, ur_orig, ur_dest, elem);
         } else {
             return lower_left;

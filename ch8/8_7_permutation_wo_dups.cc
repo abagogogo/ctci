@@ -6,7 +6,7 @@ using namespace std;
 string insert_at(const string &word, char ch, int pos) {
     string start = word.substr(0, pos);
     string end   = (pos < word.length() ? word.substr(pos) : "");
-    //cout << "RJ_DBG: insert_at() end=" << end << endl;
+    //cout << "DBG: insert_at() end=" << end << endl;
     return start + ch + end;
 }
 
@@ -20,13 +20,13 @@ vector<string> get_perms(const string &str) {
 
     char first = str[0];
     string reminder = str.substr(1);
-    //cout << "RJ_DBG: first: " << first << " , reminder: " << reminder << endl;
+    //cout << "DBG: first: " << first << " , reminder: " << reminder << endl;
     vector<string> words = get_perms(reminder);
     for (auto word : words) {
-        //cout << "RJ_DBG: word: " << word << endl;
+        //cout << "DBG: word: " << word << endl;
         for (int pos = 0; pos <= word.length(); ++pos) {
             string s = insert_at(word, first, pos);
-            //cout << "RJ_DBG: s to push_back(): " << s << endl;
+            //cout << "DBG: s to push_back(): " << s << endl;
             perms.push_back(s);
         }
     }

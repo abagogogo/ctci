@@ -45,7 +45,7 @@ int count(TreeNode *node, int target, int running_sum, map<int, int> &sum2pathcn
     running_sum += node->value;
     int sum = running_sum - target;
     int num_paths = sum2pathcnt[sum];
-    printf("RJ_DBG: node value=%d, running_sum=%d, sum=%d -> num_paths=%d\n", node->value, running_sum, sum, num_paths);
+    printf("DBG: node value=%d, running_sum=%d, sum=%d -> num_paths=%d\n", node->value, running_sum, sum, num_paths);
 
     // if running sume equals target, then one additional path starts at node.
     if (running_sum == target) {
