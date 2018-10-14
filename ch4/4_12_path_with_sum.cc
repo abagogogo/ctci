@@ -28,7 +28,7 @@ int count_paths_with_sum(TreeNode *root, int target) {
 }
 
 #else // O(n)
-void inc_sum2pathcnt(map<int, int> &sum2pathcnt, int key, int delta) {
+void inc_sum2pathcnt(unordered_map<int, int> &sum2pathcnt, int key, int delta) {
     auto it = sum2pathcnt.find(key);
     if (it != sum2pathcnt.end()) {
         it->second += delta;
@@ -38,7 +38,7 @@ void inc_sum2pathcnt(map<int, int> &sum2pathcnt, int key, int delta) {
     }
 }
 
-int count(TreeNode *node, int target, int running_sum, map<int, int> &sum2pathcnt) {
+int count(TreeNode *node, int target, int running_sum, unordered_map<int, int> &sum2pathcnt) {
     if (!node) return 0;
 
     // count paths with sum ending at current node.
@@ -62,7 +62,7 @@ int count(TreeNode *node, int target, int running_sum, map<int, int> &sum2pathcn
 }
 
 int count_paths_with_sum(TreeNode *root, int target) {
-    map<int, int> sum2pathcnt;
+    unordered_map<int, int> sum2pathcnt;
     return count(root, target, 0, sum2pathcnt);
 }
 #endif
