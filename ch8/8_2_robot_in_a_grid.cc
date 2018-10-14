@@ -3,7 +3,7 @@
 using namespace std;
 
 // memoization on failed point reduce time complexity from O(2^r+c) to O(rc).
-bool get_path(vector<vector<bool>> &maze, int row, int col, vector<pair<int, int>> &path, set<pair<int, int>> &fails) {
+bool get_path(vector<vector<bool>> &maze, int row, int col, vector<pair<int, int>> &path, unordered_set<pair<int, int>> &fails) {
     // if out of bounds or not available */
     if (col < 0 || row < 0 || !maze[row][col]) return false;
 
@@ -25,7 +25,7 @@ bool get_path(vector<vector<bool>> &maze, int row, int col, vector<pair<int, int
 }
 
 bool get_path(vector<vector<bool>> &maze, vector<pair<int, int>> &path) {
-    set<pair<int, int>> fails;
+    unordered_set<pair<int, int>> fails;
 
     if (maze.empty()) return false;
     bool result = get_path(maze, maze.size() - 1, maze[0].size() - 1, path, fails);
