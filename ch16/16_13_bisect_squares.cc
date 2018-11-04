@@ -6,6 +6,10 @@ using Endpoint = vector<double>;
 using Square   = vector<Endpoint>;
 using Line     = vector<Endpoint>;
 
+bool equal_line(const Line &l1, const Line &l2) {
+    return l1[0][0] == l2[0][0] && l1[0][1] == l2[0][1] && l1[1][0] == l2[1][0] && l1[1][1] == l2[1][1];
+}
+
 struct Solution {
     
     Line bisect(const Square &s0, const Square &s1) {
@@ -74,17 +78,37 @@ struct Solution {
 int main(void) {
     Solution sol;
 
-    vector<Square> squares = {
-        {{0.0, 0.0}, {3.0, 3.0}}, 
-        {{0.0, 5.0}, {3.0, 8.0}}};
-    Line result = sol.bisect(squares[0], squares[1]);
+    vector<pair<Square, Square>> tests = {
+        {{{0.0, 0.0}, {3.0, 3.0}}, {{0.0, 5.0}, {3.0, 8.0}}},
+        {{{0.0, 0.0}, {3.0, 3.0}}, {{5.0, 0.0}, {8.0, 3.0}}},
+        {{{0.0, 0.0}, {3.0, 3.0}}, {{5.0, 5.0}, {8.0, 8.0}}},
+        {{{0.0, 5.0}, {3.0, 8.0}}, {{3.0, 2.0}, {6.0, 5.0}}},
+        };
+    vector<Line> answers = {
+        {{1.5, 0.0}, {1.5, 8.0}},
+        {{0.0, 1.5}, {8.0, 1.5}},
+        {{0.0, 0.0}, {8.0, 8.0}},
+        {{0.0, 8.0}, {6.0, 2.0}},
+        };
 
-    for (auto sq : squares) {
-        cout << "Square: (" << sq[0][0] << ", " << sq[0][1] << ")";
-        cout << " - (" << sq[1][0] << ", " << sq[1][1] << ")" << endl; 
-    }
-    for (auto pt : result) {
-        cout << "Line: (" << pt[0] << ", " << pt[1] << ")" << endl; 
+    for (int i = 0; i < tests.size(); ++i) {
+        auto test = tests[i];
+        auto ans  = answers[i];
+
+        Line result = sol.bisect(test.first, test.second);
+        cout << (equal_line(result, ans) ? "[PASS]" : "[FAIL]") << " Test " << i << endl;
+
+        for (auto sq : {test.first, test.second}) {
+            cout << "Square: (" << sq[0][0] << ", " << sq[0][1] << ")";
+            cout << " - (" << sq[1][0] << ", " << sq[1][1] << ")" << endl; 
+        }
+        cout << "Result: ";
+        for (int i = 0; i < 2; ++i) {
+            auto pt = result[i];
+            cout << "(" << pt[0] << ", " << pt[1] << ")";
+            if (i == 0) cout << " - ";
+        }
+        cout << endl;
     }
 
     return 0;
