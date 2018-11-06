@@ -81,8 +81,56 @@ struct Solution {
     }
 };
 
+struct MySolution {
+    Result find_unsorted_seq(vector<int> arr) {
+        Result res;
+        if (arr.empty()) return res;
+
+        vector<bool> left(arr.size(), false);
+        vector<bool> right(arr.size(), false);
+
+        // for each x, max of left to x shall <= x if it's sorted.
+        int max = arr[0];
+        for (int i = 0; i < arr.size(); ++i) {
+            if (max <= arr[i]) {
+                left[i] = true;
+                max = arr[i];
+            }
+            //cout << "DBG: left[" << i << "] = " << left[i] << endl;
+        }
+
+        // for each x, min of right to x shall >= x if it's sorted.
+        int min = arr.back();
+        for (int i = arr.size() - 1; i >= 0; --i) {
+            if (min >= arr[i]) {
+                right[i] = true;
+                min = arr[i];
+            }
+            //cout << "DBG: right[" << i << "] = " << right[i] << endl;
+        }
+
+        // intersection of both condition get the anser
+        res.left = arr.size();
+        for (int i = 0; i < arr.size(); ++i) {
+            if (!left[i] || !right[i]) {
+                res.left = i;
+                break;
+            }
+        }
+        res.right = -1;
+        for (int i = arr.size() - 1; i >= 0; --i) {
+            if (!left[i] || !right[i]) {
+                res.right = i;
+                break;
+            }
+        }
+        return res;
+    }
+};
+
 int main(void) {
-    Solution sol;
+    //Solution sol;
+    MySolution sol;
 
     vector<int> test = {1, 2, 4, 7, 10, 11, 7, 12, 6, 7, 16, 18, 19};
     Result ans = {3, 9};

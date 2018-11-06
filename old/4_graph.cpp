@@ -148,6 +148,7 @@ bool Graph::has_cycle(void)
 
 bool Graph::has_route(int start, int end, bool *visited)
 {
+#if 0
     bool result = false;
 
     if (!visited[start]) {
@@ -166,6 +167,15 @@ bool Graph::has_route(int start, int end, bool *visited)
     }
 
     return result;
+#else
+    if (visited[start]) return false;
+    visited[start] = true;
+    for (auto it = m_adj[start].begin(); it != m_adj[start].end(); ++it) {
+        if (*it == end) return true;
+        if (has_route(*it, end, visited)) return true;
+    }
+    return false;
+#endif
 }
 
 bool Graph:: has_route(int start, int end)
