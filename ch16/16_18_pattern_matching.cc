@@ -56,18 +56,16 @@ int main(void) {
     Solution sol;
 
     vector<pair<string, string>> tests = {
-        /*
         {"aabab", "catcatgocatgo"},
         {"a", "catcatgocatgo"},
-        */
         {"b", "catcatgocatgo"},
-        //{"ab", "catcatgocatgo"},
+        {"ab", "catcatgocatgo"},
         };
     vector<bool> answers = {
-        //true, 
-        //true, 
         true, 
-        //true,
+        true, 
+        true, 
+        true,
         };
 
     for (int i = 0; i < tests.size(); ++i) {
